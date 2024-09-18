@@ -1,0 +1,35 @@
+name: Deploy third to Netlify using YML file
+
+on:
+  push:
+    branches:
+      - main 
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'  # Specify the Node.js version
+
+      - name: Authenticate GitHub Packages
+        run: echo "//npm.pkg.github.com/:_authToken=${{secrets.GIT_TOKEN}} " > ~/.npmrc
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build applications
+        run: |
+          npx nx build website-three --prod
+
+      - name: Deploy website-three to Netlify (Replace with your site ID)
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}  # Replace with your app 1 site ID
+        run: npx netlify-cli deploy --prod --dir=dist/website-three --filter website-three
