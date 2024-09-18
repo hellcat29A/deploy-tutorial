@@ -19,7 +19,7 @@ jobs:
           node-version: '18'  # Specify the Node.js version
 
       - name: Authenticate GitHub Packages
-        run: echo "//npm.pkg.github.com/:_authToken=${{secrets.GIT_TOKEN}} " > ~/.npmrc
+        run: echo "//npm.pkg.github.com/:_authToken=${{secrets.TOKEN_GIT}} " > ~/.npmrc
 
       - name: Install dependencies
         run: npm install
